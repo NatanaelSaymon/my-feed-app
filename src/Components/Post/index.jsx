@@ -1,9 +1,10 @@
 import styles from './styles.module.css';
 
-export function Post() {
+export function Post({ author, content }) {
   return (
     <div className={styles.post}>
-      <h1>Post 1</h1>
+      <strong>{author}</strong>
+      <p>{content}</p>
     </div>
   )
 }

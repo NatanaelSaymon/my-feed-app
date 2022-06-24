@@ -1,15 +1,14 @@
+import { Avatar } from '../Avatar';
 import { Comment } from '../Comment';
 import styles from './styles.module.css';
 
 export function Post() {
 
-  const avatar = 'https://avatars.githubusercontent.com/u/59451978?v=4';
-
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <img src={avatar} alt="Natanael Saymon" />
+          <Avatar hasBorder={true} src='https://github.com/NatanaelSaymon.png'/>
           <div className={styles.authorInfo}>
             <strong>Natanael Saymon</strong>
             <span>Front-End Developer</span>

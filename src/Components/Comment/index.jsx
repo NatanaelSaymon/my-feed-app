@@ -1,13 +1,12 @@
 import { Trash, ThumbsUp } from 'phosphor-react';
+import { Avatar } from '../Avatar';
 import styles from './styles.module.css';
 
 export function Comment() {
 
-    const avatar = 'https://avatars.githubusercontent.com/u/59451978?v=4';
-
     return(
-        <div  className={styles.comment}>
-            <img src={avatar} alt="Natanael Saymon" />
+        <div className={styles.comment}>
+            <Avatar hasBorder={false} src='https://github.com/NatanaelSaymon.png'/>
 
             <div className={styles.commentBox}>
 
@@ -18,8 +17,8 @@ export function Comment() {
                             <time title="19 de Junho às 11:05" dateTime={new Date().toLocaleDateString()}>Cerca de 1h atrás</time>
                         </div>
 
-                        <button titile="Deletar comentário">
-                            <Trash size={20}/>
+                        <button title="Deletar comentário">
+                            <Trash size={24}/>
                         </button>
                     </header>
 

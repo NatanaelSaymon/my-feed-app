@@ -9,7 +9,6 @@ export function Comment() {
             <Avatar hasBorder={false} src='https://github.com/NatanaelSaymon.png'/>
 
             <div className={styles.commentBox}>
-
                 <div className={styles.commentContent}>
                     <header>
                         <div className={styles.authorAndTime}>

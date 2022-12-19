@@ -1,48 +1,68 @@
+import { format, formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { useState } from "react";
+
 import { Avatar } from '../Avatar';
 import { Comment } from '../Comment';
+
 import styles from './styles.module.css';
 
-export function Post() {
+export function Post({ author, publishedAt, content }) {
 
-  const posts = [
-    {
-      id: 1,
-      author: {
-        avatarUrl: '',
-        name: '',
-        role: ''
-      }
-    }
-  ]
+  //data de publicação do post
+  const publishedAtDateFormatted = format(publishedAt, "dd 'de' MMMM 'às' H:mm'h'", {
+    locale: ptBR
+  })
+
+  //armazena a data do post relativa ou agora
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBR,
+    addSuffix: true
+  })
+
+  const [comments, setComments] = useState([]);
+
+  function handleCreateNewComment(e) {
+    e.preventDefault();
+
+    //adiciona mais um comentario no array de comentarios
+    setComments([...comments, comments.length + 1])
+  }
 
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar hasBorder={true} src='https://github.com/NatanaelSaymon.png'/>
+          <Avatar hasBorder={true} src={author.avatarUrl}/>
           <div className={styles.authorInfo}>
-            <strong>Natanael Saymon</strong>
-            <span>Front-End Developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time title="19 de Junho às 11:05" dateTime="2022-05-11 08:13:30">Publicado há 1h</time>
+        <time title={publishedAtDateFormatted} dateTime={publishedAt.toISOString()}>
+          {publishedDateRelativeToNow}
+        </time>
       </header>
 
       <div className={styles.content}>
-        <p>Fala galeraa 👋</p>
-        <p>Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀</p>
-        <p>
-          <a href="#">👉 jane.design/doctorcare</a>
-        </p>
-        <p>
-          <a href="#">#novoprojeto</a>{' '}
-          <a href="#">#rocketseat</a>{' '}
-          <a href="#">#nlw</a>
-        </p>
+        {content.map(item => {
+          if(item.type === 'paragraph') {
+            return(
+              <p>{item.content}</p>
+            )
+          } else if(item.type === 'link'){
+            return(
+              <p>
+                <a href="">{item.content}</a>
+              </p>
+            )
+          }
+
+        })}
       </div>
 
-      <form className={styles.commentForm}>
+      <form className={styles.commentForm} onSubmit={handleCreateNewComment}>
         <strong>Deixe seu feedback</strong>
 
         <textarea placeholder="Deixe seu feedback" />
@@ -53,7 +73,11 @@ export function Post() {
       </form>
 
       <div className={styles.commentList}>
-        <Comment />
+        {comments.map(comment => {
+          return(
+            <Comment />
+          )
+        })}
       </div>
     </article>
   )

@@ -9,6 +9,10 @@ import styles from './styles.module.css';
 
 export function Post({ author, publishedAt, content }) {
 
+  const [comments, setComments] = useState(['Post muito bacana, hein?!']);
+
+  const [newCommentText, setNewCommentText] = useState('');
+
   //data de publicação do post
   const publishedAtDateFormatted = format(publishedAt, "dd 'de' MMMM 'às' H:mm'h'", {
     locale: ptBR
@@ -20,13 +24,17 @@ export function Post({ author, publishedAt, content }) {
     addSuffix: true
   })
 
-  const [comments, setComments] = useState([]);
+  
+  function HandleNewCommentChange() {
+    setNewCommentText(event.target.value)
+  }
 
   function handleCreateNewComment(e) {
     e.preventDefault();
 
     //adiciona mais um comentario no array de comentarios
-    setComments([...comments, comments.length + 1])
+    setComments([...comments, newCommentText])
+    setNewCommentText('')
   }
 
   return (
@@ -49,12 +57,12 @@ export function Post({ author, publishedAt, content }) {
         {content.map(item => {
           if(item.type === 'paragraph') {
             return(
-              <p>{item.content}</p>
+              <p key={item.content}>{item.content}</p>
             )
           } else if(item.type === 'link'){
             return(
-              <p>
-                <a href="">{item.content}</a>
+              <p key={item.content}>
+                <a href="#">{item.content}</a>
               </p>
             )
           }
@@ -65,7 +73,12 @@ export function Post({ author, publishedAt, content }) {
       <form className={styles.commentForm} onSubmit={handleCreateNewComment}>
         <strong>Deixe seu feedback</strong>
 
-        <textarea placeholder="Deixe seu feedback" />
+        <textarea 
+          name="comment"
+          placeholder="Deixe seu feedback" 
+          value={newCommentText}
+          onChange={HandleNewCommentChange}
+        />
 
         <footer>
           <button type="submit">Comentar</button>
@@ -75,7 +88,7 @@ export function Post({ author, publishedAt, content }) {
       <div className={styles.commentList}>
         {comments.map(comment => {
           return(
-            <Comment />
+            <Comment key={comment} content={comment} />
           )
         })}
       </div>
